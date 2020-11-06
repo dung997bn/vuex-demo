@@ -5,7 +5,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { Vue } from "vue-class-component";
-
 function drawTest(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -16,18 +15,6 @@ function drawTest(
   ctx!.fillStyle = "#23de36";
   ctx!.fillRect(x, y, width, height);
 }
-
-function drawTestCircle(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  r: number
-) {
-  ctx!.fillStyle = "#56a832";
-  ctx!.arc(x, y, r, 0, 2 * Math.PI,true);
-  ctx!.fill()
-}
-
 function getMousePos(canvas: any, evt: any) {
   var rect = canvas.getBoundingClientRect();
   return {
@@ -35,9 +22,8 @@ function getMousePos(canvas: any, evt: any) {
     y: ((evt.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height,
   };
 }
-
 function isInside(pos: any, rect: any) {
-  debugger;
+    debugger
   return (
     pos.x > rect.x &&
     pos.x < rect.x + rect.width &&
@@ -45,27 +31,13 @@ function isInside(pos: any, rect: any) {
     pos.y > rect.y
   );
 }
-
-function isInsideCircle(pos: any, circle: any) {
-  debugger;
-  return (
-    pos.x >= circle.x - circle.r &&
-    pos.x <= circle.x + circle.r &&
-    pos.y <= circle.y + circle.r &&
-    pos.y >= circle.y - circle.r &&
-    Math.sqrt((Math.pow(pos.x - circle.x, 2) + Math.pow(pos.y - circle.y, 2))) <
-      circle.r
-  );
-}
-
 export default defineComponent({
-  name: "Canvas",
+  name: "CanvasReactangle",
   data() {
     return {
       currentWidth: 700,
       ratio: 5 / 7,
       data: [] as Array<any>,
-      dataCircle: [] as Array<any>,
     };
   },
   computed: {
@@ -81,26 +53,21 @@ export default defineComponent({
     const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
     const ctx = canvas.getContext("2d");
     const data = this.data;
-    const dataCircle = this.dataCircle;
     canvas.addEventListener(
       "click",
       function (event) {
+        console.log(event);
         var pos = getMousePos(canvas, event);
         drawTest(ctx!, pos.x, pos.y, 5, 5);
-       //  drawTestCircle(ctx!, dataCircle[0].x, dataCircle[0].y, 10);
-        // check inside reactangle
-        // if (isInside(pos, data[0])) {
-        //   alert("clicked inside rect");
-        // } else {
-        //   alert("clicked outside rect");
-        // }
-
-        // check inside circle
-        if (isInsideCircle(pos, dataCircle[0])) {
+        //var rect = canvas.getBoundingClientRect();
+        // drawTest(ctx!, rect.x, rect.y, rect.width, rect.height);
+        console.log(data);
+        if (isInside(pos, data[0])) {
           alert("clicked inside rect");
         } else {
           alert("clicked outside rect");
         }
+        console.log(pos);
       },
       false
     );
@@ -122,14 +89,7 @@ export default defineComponent({
           ctx!.drawImage(img, 0, 0, width, height);
           const ratioWidth = width / widthImage;
           const ratioHeight = height / heightImage;
-          // this.drawRectangle1(
-          //   ctx!,
-          //   widthImage,
-          //   heightImage,
-          //   ratioWidth,
-          //   ratioHeight
-          // );
-          this.drawCircle(
+          this.drawRectangle1(
             ctx!,
             widthImage,
             heightImage,
@@ -141,35 +101,6 @@ export default defineComponent({
           // this.drawCircle2(ctx!);
         }, 10);
       };
-    },
-    drawCircle(
-      ctx: CanvasRenderingContext2D,
-      widthImage: number,
-      heightImage: number,
-      ratioWidth: number,
-      ratioHeight: number
-    ) {
-      ctx!.fillStyle = "#d62216";
-      ctx!.arc(
-        ((229.25597060624614 * widthImage) / 800 + (25 * widthImage) / 800) *
-          ratioWidth,
-        ((100.45942927727981 * heightImage) / 600 + (25 * widthImage) / 800) *
-          ratioHeight,
-        25,
-        0,
-        2 * Math.PI
-      );
-      ctx.fill();
-
-      this.dataCircle.push({
-        x:
-          ((229.25597060624614 * widthImage) / 800 + (25 * widthImage) / 800) *
-          ratioWidth,
-        y:
-          ((100.45942927727981 * heightImage) / 600 + (25 * widthImage) / 800) *
-          ratioHeight,
-        r: 25,
-      } as any);
     },
     drawRectangle1(
       ctx: CanvasRenderingContext2D,

@@ -3,6 +3,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
     <router-link to="/canvas">Canvas</router-link>
+    <router-link to="/canvas-rect">CanvasRect</router-link>
   </div>
   <router-view/>
 </template>
